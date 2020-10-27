@@ -29,7 +29,25 @@ namespace UserService.Controllers
                 return "No Fieber with " + id + " Celsius";
             }
             else return "Fieber with " + id + " Celsius";
-            
        }
+
+        // GET: api/Fieber/38/70
+        [HttpGet("{id}/{age}", Name = "GetUserFieber")]
+        public String Get(int id, int age)
+        {
+            if (id < 37.5)
+            {
+                return "No Fieber with " + id + " Celsius" + "age is not Important";
+            }
+            else 
+            {
+                if(age > 50)
+                {
+                    return "Fieber with " + id + " Celsius " + " ,age is " + age + " DANGER";
+                }
+                else return "Fieber with " + id + " Celsius " + " ,age is " + age + " Not Dangerous(?)";
+            } 
+
+        }
     }
 }
