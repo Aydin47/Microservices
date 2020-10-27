@@ -4,55 +4,41 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UserService.Database.Entities;
 
 namespace UserService.Controllers
 {
-    [Route("api/wetter/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class WetterController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         // GET: api/Wetter
         [HttpGet]
-        public IEnumerable<WeatherForecasts> Get()
+        public String Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 20).Select(index => new WeatherForecasts
+            return "To farenhite/celsius";
+        }
+
+        // GET: api/Wetter/27/F or api/Wetter/27/C
+        [HttpGet("{id}/{temp}", Name = "GetWetter")]
+        public string Get(int id, string temp)
+        {
+            WeatherForecasts wetter = new WeatherForecasts();
+            if (temp == "C") 
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
-        }
-
-        // GET: api/Wetter/5
-        [HttpGet("{id}", Name = "GetWetter")]
-        public string Get(int id)
-        {
-            return "ok";
-        }
-
-        // POST: api/Wetter
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Wetter/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+                wetter.TemperatureC = id;
+                return wetter.TemperatureF.ToString();
+            }
+            else if (temp == "F") 
+            {
+                wetter.TemperatureC = (int)((id - 32) * 0.5556) + 1;
+                if (wetter.TemperatureF == id)
+                {
+                    return wetter.TemperatureC.ToString();
+                }
+                else return "ERROR start from 32";
+            } 
+            else return "ERROR on temp";
         }
     }
 }

@@ -14,5 +14,7 @@ namespace UserService.Database.Entities
         public string Adress { get; set; }
 
         public string Contact { get; set; }
+
+        public string Tempreture { get; set; }
     }
 }
